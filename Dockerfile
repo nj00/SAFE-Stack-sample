@@ -1,5 +1,5 @@
 # FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-alpine
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster-slim
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 COPY /deploy /
 WORKDIR /Server
 EXPOSE 8085
