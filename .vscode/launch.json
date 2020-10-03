@@ -11,6 +11,10 @@
             "logging": {
                 "moduleLoad": false
             },
+            "cwd": "${workspaceFolder}/src/Server/bin/Debug/netcoreapp3.0/",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
             "stopAtEntry": false,
             "console": "internalConsole",
         },
