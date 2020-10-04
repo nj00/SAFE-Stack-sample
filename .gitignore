@@ -14,5 +14,3 @@ release.sh
 *.DotSettings.user
 deploy
 .ionide/
-
-BlogData.db
