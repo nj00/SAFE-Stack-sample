@@ -1,39 +1,28 @@
-open System.IO
-open System.Threading.Tasks
+module Server
 
-open Microsoft.AspNetCore.Builder
-open Microsoft.Extensions.DependencyInjection
-open FSharp.Control.Tasks.V2
-open Giraffe
 open Saturn
+open Giraffe.Core
+open Giraffe.ResponseWriters
+
 open Shared
 
-open Fable.Remoting.Server
-open Fable.Remoting.Giraffe
 
 // Dapperの初期化。null←→option の変換設定
 DataAccess.addOptionHandlers()
 // Sqliteの型変換設定
 Repository.SqliteTypeHandler.addTypeHandlers()
 
-let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
-
-let publicPath = Path.GetFullPath "../Client/public"
-
-let port =
-    "SERVER_PORT"
-    |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
 // WebApiルート(jwtによるセキュアなルート)
 let apiRouter = router {
-    not_found_handler (text "404")
+    not_found_handler (setStatusCode 404 >=> text "Api 404")
     pipe_through (Auth.requireAuthentication ChallengeType.JWT)
     forward "/ITaxonomyApi" Services.Taxonomies.apiRoute
 }
 
 // フリーWebApiルート
 let publicRouter = router {
-    not_found_handler (text "404")
+    not_found_handler  (setStatusCode 404 >=> text "Api 404")
     forward "/IAuthApi" Services.Auth.apiRoute
     forward "/ICounterApi" Services.Counter.apiRoute
 }
@@ -41,7 +30,7 @@ let publicRouter = router {
 
 // Topルーター
 let topRouter = router {
-    not_found_handler (text "404")
+    not_found_handler  (setStatusCode 404 >=> text "Api 404")
     forward "/public" publicRouter
     forward "/api" apiRouter
 }
@@ -49,10 +38,10 @@ let topRouter = router {
 let app = application {
     use_jwt_authentication Services.Auth.secretKey Services.Auth.issuer
 
-    url ("http://0.0.0.0:" + port.ToString() + "/")
+    url "http://0.0.0.0:8085"
     use_router topRouter
     memory_cache
-    use_static publicPath
+    use_static "public"
     use_gzip
     app_config DbInit.Initialize
 }
