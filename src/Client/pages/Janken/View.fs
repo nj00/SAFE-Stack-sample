@@ -5,7 +5,7 @@ open Fulma
 
 open Types
 
-let root model dispatch =
+let render model dispatch =
     form [] [
       Field.div [] [ Label.label [ ] [ str "あなたの手" ] ]
       Field.div [ Field.IsGrouped ]

@@ -6,12 +6,12 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build Server",
-            "program": "${workspaceFolder}/src/Server/bin/Debug/netcoreapp3.0/Server.dll",
+            "program": "${workspaceFolder}/src/Server/bin/Debug/netcoreapp3.1/Server.dll",
             "args": [],
             "logging": {
                 "moduleLoad": false
             },
-            "cwd": "${workspaceFolder}/src/Server/bin/Debug/netcoreapp3.0/",
+            "cwd": "${workspaceFolder}/src/Server/bin/Debug/netcoreapp3.1/",
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },

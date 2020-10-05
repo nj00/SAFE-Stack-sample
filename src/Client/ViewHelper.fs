@@ -22,7 +22,7 @@ let goToUrl (e: MouseEvent) =
     Navigation.newUrl href |> List.map (fun f -> f ignore) |> ignore
 let onEnter msg dispatch =
     function
-    | (ev:KeyboardEvent) when ev.keyCode = KeyCodeEnter ->
+    | (ev:KeyboardEvent) when ev.charCode = KeyCodeEnter ->
         ev.preventDefault()
         dispatch msg
     | _ -> ()

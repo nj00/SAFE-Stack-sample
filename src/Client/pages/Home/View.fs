@@ -7,7 +7,7 @@ open Fable.FontAwesome
 
 open Types
 
-let root model dispatch =
+let render model dispatch =
   form [] [
     Field.div [ ]
         [ Label.label [ ] [ str "Username" ]

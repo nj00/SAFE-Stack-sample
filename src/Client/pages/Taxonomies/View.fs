@@ -184,7 +184,7 @@ let detail (record:BlogModels.Taxonomy option) dispatch =
       ]
 
 
-let root (model:Model) dispatch =
+let render (model:Model) dispatch =
 
     div [] [
       Label.label [] [str "一覧"]
