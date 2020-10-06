@@ -7,6 +7,7 @@
 
 [SAFE Stackのテンプレートがv2になって大きく変わりました。- 猫に.NET](https://www.nekoni.net/Blog/Article/nekonidotnet-admin-migrate-safev2)
 
+-----
 
 下記の記事では旧テンプレートで作成していました。SafeV1ブランチを参照。
 
