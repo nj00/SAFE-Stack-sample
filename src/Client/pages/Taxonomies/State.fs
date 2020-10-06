@@ -21,12 +21,12 @@ let getApi jwt : ITaxonomyApi =
 /// </summary>
 let getList jwt (criteria:ListCriteria) =
     let param = { taxonomyType =
-                    match criteria.taxonomyType with
+                    match criteria.TaxonomyType with
                     | Category -> Some TaxonomyTypeEnum.Category
                     | Tag -> Some TaxonomyTypeEnum.Tag
                     | Series -> Some TaxonomyTypeEnum.Series
                     | _ -> None
-                  pagenation = criteria.page }
+                  pagenation = criteria.Page }
 
     Cmd.OfAsync.either
         (getApi jwt).getTaxonomies
@@ -39,19 +39,19 @@ let getList jwt (criteria:ListCriteria) =
 /// <summary>
 let init jwt : Model * Cmd<Msg> =
     let model = {
-        jwt = jwt
-        listCriteria = { taxonomyType = All; page = initPagenation}
-        dataList = None
-        currentRec = None
+        Jwt = jwt
+        ListCriteria = { TaxonomyType = All; Page = initPagenation}
+        DataList = None
+        CurrentRec = None
     }
-    let cmd = getList model.jwt model.listCriteria
+    let cmd = getList model.Jwt model.ListCriteria
     model, cmd
 
 /// <summary>
 /// Update関数
 /// </summary>
 let update (msg : Msg) (model : Model) : Model * Cmd<Msg> =
-    let jwt = model.jwt
+    let jwt = model.Jwt
     let api = getApi jwt
     let getList = getList jwt
     
@@ -77,25 +77,25 @@ let update (msg : Msg) (model : Model) : Model * Cmd<Msg> =
     match msg with
     // 一覧再読み込み
     | Reload -> 
-        {model with currentRec = None}, getList model.listCriteria
+        {model with CurrentRec = None}, getList model.ListCriteria
 
     // 一覧抽出条件変更
     | CriteriaChanged x ->
-        let newCriteria = {x with page = initPagenation } 
-        {model with listCriteria = newCriteria}, Cmd.ofMsg Reload
+        let newCriteria = {x with Page = initPagenation } 
+        {model with ListCriteria = newCriteria}, Cmd.ofMsg Reload
 
     // ページング
     | PageChanged newPage ->
-        {model with listCriteria = { model.listCriteria with page = newPage} }, Cmd.ofMsg Reload
+        {model with ListCriteria = { model.ListCriteria with Page = newPage} }, Cmd.ofMsg Reload
 
     // 一覧読み込み後
     | Loaded (Ok x) -> 
-        { model with dataList = Some x.data; listCriteria = {model.listCriteria with page = x.pagenation } }, 
+        { model with DataList = Some x.data; ListCriteria = {model.ListCriteria with Page = x.pagenation } }, 
         Cmd.none
 
     // 新規追加
     | AddNew -> 
-        { model with currentRec = Some { Id = -1L; Type = TaxonomyTypeEnum.Category; Name = ""; UrlSlug = ""; Description = None; }}, 
+        { model with CurrentRec = Some { Id = -1L; Type = TaxonomyTypeEnum.Category; Name = ""; UrlSlug = ""; Description = None; }}, 
         Cmd.none
 
     // 一覧からデータ選択
@@ -107,25 +107,29 @@ let update (msg : Msg) (model : Model) : Model * Cmd<Msg> =
             (Ok >> Selected) 
             ApiError
     | Selected (Ok x) ->
-        { model with currentRec = x }, Cmd.none
-    
+        { model with CurrentRec = x }, Cmd.none
+
+    // 選択解除
+    | UnSelect ->
+        { model with CurrentRec = None }, Cmd.none
+
     // 値変更
     | RecordChanged changed ->
-        { model with currentRec = Some changed }, Cmd.none
+        { model with CurrentRec = Some changed }, Cmd.none
 
     // 保存
     | Save x ->
-        { model with currentRec = Some x}, insertOrUpdate x
+        { model with CurrentRec = Some x}, insertOrUpdate x
     | Saved (Ok _)->
         let newCurrent = 
-            if isNewRec model.currentRec.Value then
+            if isNewRec model.CurrentRec.Value then
                 // 新規の場合、末尾に持っていく。サーバー側でcurrentPageが調整される
                 System.Int64.MaxValue
             else
-                model.listCriteria.page.currentPage
-        let newPager = {model.listCriteria.page with currentPage = newCurrent}
-        let newCriteria = {model.listCriteria with page = newPager } 
-        { model with listCriteria = newCriteria }, savedCmd { title=""; message="保存しました。" }
+                model.ListCriteria.Page.currentPage
+        let newPager = {model.ListCriteria.Page with currentPage = newCurrent}
+        let newCriteria = {model.ListCriteria with Page = newPager } 
+        { model with ListCriteria = newCriteria }, savedCmd { Title=""; Message="保存しました。" }
 
     // 削除
     | Remove x ->
@@ -136,7 +140,7 @@ let update (msg : Msg) (model : Model) : Model * Cmd<Msg> =
             (Ok >> Removed)
             ApiError
     | Removed (Ok _)->
-        model, savedCmd { title=""; message="削除しました。" }
+        model, savedCmd { Title=""; Message="削除しました。" }
 
     // Apiエラーと通知はそのまま伝搬
     | ApiError _ | Notify _ ->

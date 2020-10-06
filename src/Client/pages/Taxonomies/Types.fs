@@ -10,15 +10,15 @@ type TaxonomyType =
   | Series
 
 type ListCriteria = {
-  taxonomyType: TaxonomyType;
-  page: PagerModel;
+  TaxonomyType: TaxonomyType;
+  Page: PagerModel;
 }
 
 type Model = {
-  jwt: string
-  listCriteria: ListCriteria
-  dataList: seq<BlogModels.Taxonomy> option
-  currentRec: BlogModels.Taxonomy option
+  Jwt: string
+  ListCriteria: ListCriteria
+  DataList: seq<BlogModels.Taxonomy> option
+  CurrentRec: BlogModels.Taxonomy option
 }
 
 type Msg =
@@ -29,6 +29,7 @@ type Msg =
   | AddNew
   | Select of BlogModels.Taxonomy
   | Selected of Result<BlogModels.Taxonomy option, exn>
+  | UnSelect
   | RecordChanged of BlogModels.Taxonomy
   | Save of BlogModels.Taxonomy
   | Saved of Result<int, exn>

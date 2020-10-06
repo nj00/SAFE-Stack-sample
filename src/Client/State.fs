@@ -132,7 +132,7 @@ let update msg model =
     | LoggedIn newUser, _ ->
         let page = 
             match model.PageModel with
-            | TaxonomiesModel m -> TaxonomiesModel {m with jwt = newUser.Token}
+            | TaxonomiesModel m -> TaxonomiesModel {m with Jwt = newUser.Token}
             | _ -> model.PageModel
         { model with UserData = Some newUser; PageModel = page }, Cmd.none
 
