@@ -1,7 +1,7 @@
 module Counter.View
 
-open Fable.React
-open Fulma
+open Feliz
+open Feliz.Bulma
 
 open Types
 
@@ -10,21 +10,31 @@ let show = function
 | None -> "Loading..."
 
 
-let root (model:Model) dispatch =
-    form [] [
-      Field.div [ Field.IsGrouped ]
-          [ Control.p [ ]
-              [ Input.text
-                  [ Input.Disabled true
-                    Input.Value (show model) ] ]
-            Control.p [ ]
-              [ Button.a
-                  [ Button.Color IsInfo
-                    Button.OnClick (fun _ -> dispatch Increment) ]
-                  [ str "+" ] ]
-            Control.p [ ]
-              [ Button.a
-                  [ Button.Color IsInfo
-                    Button.OnClick (fun _ -> dispatch Decrement) ]
-                  [ str "-" ] ] ]
+let render (model:Model) dispatch =
+  Html.form [
+    Bulma.field.div [
+      field.isGrouped
+      prop.children [
+        Bulma.control.p [
+          Bulma.input.text [
+            prop.disabled true
+            prop.value (show model)
+          ]
+        ]
+        Bulma.control.p [
+          Bulma.button.button [
+            color.isInfo
+            prop.onClick (fun _ -> dispatch Increment)
+            prop.text "+"
+          ]
+        ]
+        Bulma.control.p [
+          Bulma.button.button [
+            color.isInfo
+            prop.onClick (fun _ -> dispatch Decrement)
+            prop.text "-"
+          ]
+        ]
+      ]
     ]
+  ]

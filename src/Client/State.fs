@@ -67,32 +67,32 @@ let update msg model =
     // 通知メッセージ
     | NotificationMsg msg, _ ->
         let errorToast note = 
-            Toast.message note.message
+            Toast.message note.Message
             |> Toast.position Toast.TopRight
             |> Toast.withCloseButton
             |> Toast.noTimeout
             |> Toast.icon Fa.Solid.TimesCircle
             |> Toast.error
         let warningToast note = 
-            Toast.message note.message
+            Toast.message note.Message
             |> Toast.position Toast.TopRight
             |> Toast.withCloseButton
-            |> Toast.title note.title
+            |> Toast.title note.Title
             |> Toast.noTimeout
             |> Toast.icon Fa.Solid.ExclamationTriangle
             |> Toast.warning
         let successToast note = 
-            Toast.message note.message
+            Toast.message note.Message
             |> Toast.position Toast.TopRight
             |> Toast.withCloseButton
-            |> Toast.title note.title
+            |> Toast.title note.Title
             |> Toast.icon Fa.Solid.CheckCircle
             |> Toast.success
         let infoToast note = 
-            Toast.message note.message
+            Toast.message note.Message
             |> Toast.position Toast.TopRight
             |> Toast.withCloseButton
-            |> Toast.title note.title
+            |> Toast.title note.Title
             |> Toast.icon Fa.Solid.InfoCircle
             |> Toast.info
         match msg with
@@ -107,7 +107,7 @@ let update msg model =
     // 例外メッセージ
     | ErrorMsg exn, _ ->
         let notify (exn:exn) = 
-            Cmd.ofMsg (NotificationMsg (MsgType.Error { Note.title = ""; message = exn.Message }))
+            Cmd.ofMsg (NotificationMsg (MsgType.Error { Note.Title = ""; Message = exn.Message }))
         match exn with
         | :? ProxyRequestException as ex -> 
             match ex.StatusCode with

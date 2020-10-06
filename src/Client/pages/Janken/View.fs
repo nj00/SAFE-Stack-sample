@@ -1,33 +1,46 @@
 module Janken.View
 
-open Fable.React
-open Fulma
+open Feliz
+open Feliz.Bulma
 
 open Types
 
 let render model dispatch =
-    form [] [
-      Field.div [] [ Label.label [ ] [ str "あなたの手" ] ]
-      Field.div [ Field.IsGrouped ]
-          [ Control.p [ ]
-              [ Button.a
-                  [ Button.Color IsInfo
-                    Button.OnClick (fun _ -> dispatch Guu) ]
-                  [ str "グー" ] ]
-            Control.p [ ]
-              [ Button.a
-                  [ Button.Color IsInfo
-                    Button.OnClick (fun _ -> dispatch Choki) ]
-                  [ str "チョキ" ] ]
-            Control.p [ ]
-              [ Button.a
-                  [ Button.Color IsInfo
-                    Button.OnClick (fun _ -> dispatch Paa) ]
-                  [ str "パー" ] ] ]
-      Field.div []
-        [ Label.label [] [str "結果"]
-          Control.p [] [str (sprintf "%s" model.Result)]]
-      Field.div []
-        [ Label.label [] [str "勝敗"]
-          Control.p [] [str (sprintf "%i 勝 %i 敗" model.Win model.Lost)]]
+  Html.form [
+    Bulma.field.div [
+      Bulma.label [prop.text "あなたの手"]
     ]
+    Bulma.field.div [
+      field.isGrouped
+      
+      prop.children [
+        Bulma.control.p [
+          Bulma.buttons [
+            Bulma.button.button [
+              color.isPrimary
+              prop.onClick (fun _ -> dispatch Guu)
+              prop.text "グー"
+            ]
+            Bulma.button.button [
+              color.isInfo
+              prop.onClick (fun _ -> dispatch Choki)
+              prop.text "チョキ"
+            ]
+            Bulma.button.button [
+              color.isDanger
+              prop.onClick (fun _ -> dispatch Paa)
+              prop.text "パー"
+            ]
+          ]
+        ]
+      ]
+    ]
+    Bulma.field.div [
+      Bulma.label [prop.text "結果"]
+      Bulma.control.p [prop.textf "%s" model.Result]
+    ]
+    Bulma.field.div [
+      Bulma.label [prop.text "勝敗"]
+      Bulma.control.p [prop.textf "%i 勝 %i 敗" model.Win model.Lost]
+    ]
+  ]

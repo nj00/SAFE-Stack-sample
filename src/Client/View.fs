@@ -18,7 +18,7 @@ let navBrand (userName:string) dispatch =
                 Bulma.navbarBrand.div [
                     Bulma.navbarItem.a [
                         prop.classes ["has-text-weight-bold"; "is-size-4"]
-                        prop.text "猫に.NET"
+                        prop.text "SAFE Stack サンプル"
                     ]
                     Bulma.navbarBurger [ Html.span []; Html.span []; Html.span [] ]
                 ]
@@ -65,7 +65,7 @@ let view (model : Model) (dispatch : Msg -> unit) =
     let pageHtml =
         function
         | HomeModel m -> Home.View.render m (HomeMsg >> dispatch)
-        | CounterModel m -> Counter.View.root m (CounterMsg >> dispatch)
+        | CounterModel m -> Counter.View.render m (CounterMsg >> dispatch)
         | JankenModel m -> Janken.View.render m (JankenMsg >> dispatch)
         | TaxonomiesModel m -> Taxonomies.View.render m (TaxonomiesMsg >> dispatch)        
 

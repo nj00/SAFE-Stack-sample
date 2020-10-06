@@ -1,8 +1,8 @@
 module App.Notification
 
 type Note = {
-    title: string;
-    message: string;
+    Title: string;
+    Message: string;
 }
 
 type MsgType =
